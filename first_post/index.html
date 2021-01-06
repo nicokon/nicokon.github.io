@@ -1,18 +1,261 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>从零开始的树莓派家庭共享文件服务搭建 - nicokon’s blog</title><meta name=Description content="nicokon’s blog"><meta property="og:title" content="从零开始的树莓派家庭共享文件服务搭建"><meta property="og:description" content="现在最新已经是4B了，性能更强了，千兆网口也更适合家庭共享文件。"><meta property="og:type" content="article"><meta property="og:url" content="https://nicokon.github.io/first_post/"><meta property="article:published_time" content="2021-01-05T20:36:56+08:00"><meta property="article:modified_time" content="2021-01-05T20:36:56+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="从零开始的树莓派家庭共享文件服务搭建"><meta name=twitter:description content="现在最新已经是4B了，性能更强了，千兆网口也更适合家庭共享文件。"><meta name=application-name content="nicokon’s blog"><meta name=apple-mobile-web-app-title content="nicokon’s blog"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://nicokon.github.io/first_post/><link rel=prev href=https://nicokon.github.io/helloworld/><link rel=stylesheet href=/lib/normalize/normalize.min.css><link rel=stylesheet href=/css/style.min.css><link rel=stylesheet href=/lib/fontawesome-free/all.min.css><link rel=stylesheet href=/lib/animate/animate.min.css><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"从零开始的树莓派家庭共享文件服务搭建","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/nicokon.github.io\/first_post\/"},"genre":"posts","keywords":"树莓派","wordcount":3571,"url":"https:\/\/nicokon.github.io\/first_post\/","datePublished":"2021-01-05T20:36:56+08:00","dateModified":"2021-01-05T20:36:56+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"nicokon"},"description":""}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':('auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark'))&&document.body.setAttribute('theme','dark');</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title="nicokon’s blog">nicokon’s</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/ title=归档>archive </a><a class=menu-item href=/tags/ title=标签>tags </a><a class=menu-item href=/categories/tech/>tech </a><a class=menu-item href=/categories/life/>life </a><a class=menu-item href=/about/ title=关于>about </a><a class=menu-item href=/index.xml title=RSS><i class="fas fa-rss fa-fw"></i></a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span></span><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title="nicokon’s blog">nicokon’s</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/ title=归档>archive</a><a class=menu-item href=/tags/ title=标签>tags</a><a class=menu-item href=/categories/tech/>tech</a><a class=menu-item href=/categories/life/>life</a><a class=menu-item href=/about/ title=关于>about</a><a class=menu-item href=/index.xml title=RSS><i class="fas fa-rss fa-fw"></i></a><a href=javascript:void(0); class="menu-item theme-switch" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">从零开始的树莓派家庭共享文件服务搭建</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>nicokon</a></span>&nbsp;<span class=post-category>收录于 <a href=/categories/tech/><i class="far fa-folder fa-fw"></i>tech</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-01-05>2021-01-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3571 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 8 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#环境>环境</a></li><li><a href=#所需硬件>所需硬件</a></li><li><a href=#所需软件>所需软件</a></li><li><a href=#准备步骤>准备步骤</a><ul><li><a href=#获取树莓派系统镜像>获取树莓派系统镜像</a></li><li><a href=#格式化和测试sd卡>格式化和测试SD卡</a></li><li><a href=#烧录系统到sd卡>烧录系统到SD卡</a></li><li><a href=#开启ssh远程连接服务>开启SSH远程连接服务</a></li><li><a href=#初次启动>初次启动</a></li><li><a href=#基本设置>基本设置</a></li></ul></li><li><a href=#文件共享服务搭建>文件共享服务搭建</a><ul><li><a href=#安装ntfs-3g>安装ntfs-3g</a></li><li><a href=#硬盘挂载>硬盘挂载</a></li><li><a href=#安装samba>安装Samba</a></li></ul></li><li><a href=#aria2>Aria2</a><ul><li><a href=#安装及配置>安装及配置</a></li><li><a href=#前端>前端</a></li></ul></li><li><a href=#参考>参考</a></li></ul></nav></div></div><div class=content id=content><h2 id=环境>环境</h2><ul><li>Win10</li></ul><h2 id=所需硬件>所需硬件</h2><ul><li><p>树莓派 3B+</p><p>📣现在最新已经是4B了，性能更强了，千兆网口也更适合家庭共享文件。手头正好有3B+就用了。</p><ul><li>散热片2片</li><li>保护壳一个</li></ul></li><li><p>电源：</p><ul><li>Micro USB 接口数据线（输出电压：5V 输出电流：≥2A）</li><li>实际使用了IPAD 充电器，感觉其他手机充电器应该也行</li></ul></li><li><p>Micro SD卡</p><ul><li>树莓派不带硬盘，Micro SD卡就是硬盘。最小容量8G，推荐使用16G和32G的卡。</li></ul></li><li><p>SD 读卡器</p></li><li><p>网线一根</p></li><li><p>显示器：（可以不用）</p><ul><li>Raspberry pi 带有HDMI接口，可以连接显示器SD 卡读卡器</li><li>实际使用了SSH 在电脑上连接VNC远程桌面，实际上也不太用到</li></ul></li><li><p>电脑</p><ul><li>进行SSH连接等各种操作</li></ul></li><li><p>硬盘或其他大容器存储设备以及配套电源等</p><p>📣实际使用了2T的机械硬盘和易驱线+电源，因为树莓派带不动3.5寸的硬盘，硬盘一定要额外的电源。硬盘盒子可能比易驱线更稳。所以移动硬盘可能更省事，直接USB一插就好了，还剩空间。</p></li></ul><h2 id=所需软件>所需软件</h2><ul><li><p>系统下载（选一个）</p><blockquote><p>想要有桌面的，系统也要下desktop版，如果使用OMV5的话，官方手册建议系统是lite版，不过OMV5不在本文讨论之列。</p></blockquote><ul><li><a href=https://www.raspberrypi.org/software/ target=_blank rel="noopener noreffer">官网</a></li><li><a href=https://mirrors.tuna.tsinghua.edu.cn/raspberry-pi-os-images/ target=_blank rel="noopener noreffer">清华镜像</a></li><li><a href=https://mirrors.sjtug.sjtu.edu.cn/raspberry-pi-os-images/ target=_blank rel="noopener noreffer">上交镜像</a></li></ul></li><li><p>检验MD5：检验下载系统镜像是否正确</p><ul><li><a href=https://md5-sha-checksum-utility.en.lo4d.com/windows target=_blank rel="noopener noreffer">MD5–SHA Checksum utility</a></li></ul><p>📣保险起见还是Check一下</p></li><li><p>解压软件</p><ul><li>7-Zip</li></ul></li><li><p>格式化SD卡</p><ul><li><a href=https://www.sdcard.org/downloads/formatter/eula_windows/index.html target=_blank rel="noopener noreffer">SDFormatter</a></li><li><a href=http://www.heise.de/ct/Redaktion/bo/downloads/h2testw_1.4.zip target=_blank rel="noopener noreffer">h2testw</a>（不用也可）</li></ul></li><li><p>烧录系统（选一个）</p><ul><li><a href=https://www.balena.io/etcher/ target=_blank rel="noopener noreffer">Etcher</a></li><li>win32diskimager</li></ul></li><li><p>SSH 客户端</p><ul><li><a href=https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html target=_blank rel="noopener noreffer">PuTTY</a></li><li>或其他</li></ul><p>📣实际直接使用了系统自带的cmd</p></li></ul><h2 id=准备步骤>准备步骤</h2><h3 id=获取树莓派系统镜像>获取树莓派系统镜像</h3><ol><li>在<a href=https://www.raspberrypi.org/software/ target=_blank rel="noopener noreffer">官网</a>/<a href=https://mirrors.tuna.tsinghua.edu.cn/raspberry-pi-os-images/ target=_blank rel="noopener noreffer">镜像站</a>下载树莓派系统</li><li>校验<a href=https://md5-sha-checksum-utility.en.lo4d.com/windows target=_blank rel="noopener noreffer">MD5</a>和SHA hash值，确保文件正确（重要）</li><li>使用解压工具如<code>7-Zip</code>解压出以<code>.img</code>结尾的镜像</li></ol><p>📣因为是小白，所以实际上每一步都做了。</p><h3 id=格式化和测试sd卡>格式化和测试SD卡</h3><ol><li>将SD卡插入读卡器，读卡器接入电脑的USB接口</li><li>使用<a href=https://www.sdcard.org/downloads/formatter/eula_windows/index.html target=_blank rel="noopener noreffer">SD格式化工具</a>清理SD卡</li><li>等待</li><li>使用<a href=http://www.heise.de/ct/Redaktion/bo/downloads/h2testw_1.4.zip target=_blank rel="noopener noreffer">测试工具</a>,确保没有错误（可选）</li><li>等待</li><li>再次格式化SD卡</li><li>等待</li></ol><p>📣因为是小白，所以实际上每一步都做了。</p><h3 id=烧录系统到sd卡>烧录系统到SD卡</h3><ol><li>使用<a href=https://www.balena.io/etcher/ target=_blank rel="noopener noreffer">烧录工具</a>将系统烧录到SD卡内</li><li>等待</li></ol><h3 id=开启ssh远程连接服务>开启SSH远程连接服务</h3><ol><li>烧录完，在电脑上进入SD卡内</li><li>新建一个名为<code>ssh</code>且无任何后缀名的空文件，如果没有网线的话，从初次启动的第六步的第二步开始。如果<strong>没有路由器，没有网线，没有显示器</strong>，从初次启动的第六步开始。</li><li>弹出SD卡</li></ol><h3 id=初次启动>初次启动</h3><ol><li><p>将SD卡插入树莓派</p></li><li><p>连接电源</p></li><li><p>连接网线到路由器</p></li><li><p>登入路由器，进入路由器设置面板，查看树莓派的IP地址，</p><ul><li>如果以后只使用有线连接，可以将有线连接的IP地址和MAC地址进行绑定</li></ul></li><li><p>使用SSH客户端登录</p><ul><li>cmd：<code>ssh pi@ip地址</code>；password：<code>raspberry</code></li><li>登录出现<code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</code>,进入提示的文件路径，一般是删除<code>.ssh</code>文件夹下的known_hosts文件中的某一行（提示路径后面的数字），重新<code>ssh</code>就可以了。</li></ul></li><li><p>如果<strong>没有路由器，没有网线，没有显示器</strong>，只有一台联网的电脑，就可以进行wifi预设置，<strong>有失败的可能性</strong>。</p><ol><li><p>打开电脑的移动热点</p></li><li><p>在创建完<code>ssh</code>文件后，再创建一个新文本文档，内容为</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span><span class=lnt>9
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.79.1" /><meta name="theme-color" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>从零开始的树莓派家庭共享文件服务搭建 | nicokon’s blog</title>
+
+    <link rel="stylesheet" href="/scss/main.scss" />
+
+    
+    
+        <script src="/js/meme.min.js"></script>
+
+    
+
+    
+
+    <meta name="author" content="nicokon" /><meta name="description" content="现在最新已经是4B了，性能更强了，千兆网口也更适合家庭共享文件。" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="nicokon’s blog" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="nicokon’s blog" />
+    <meta name="msapplication-starturl" content="../" />
+    <meta name="msapplication-TileColor" content="" />
+    <meta name="msapplication-TileImage" content="../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://nicokon.github.io/first_post/" />
+    
+
+    
+    
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+
+
+
+            
+                
+                
+                
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="default" data-type="posts">
+
+            <h1 class="post-title p-name">从零开始的树莓派家庭共享文件服务搭建</h1>
+
+            
+
+            
+
+            
+
+            <div class="post-body e-content">
+              <h2 id="环境">环境</h2>
+<ul>
+<li>Win10</li>
+</ul>
+<h2 id="所需硬件">所需硬件</h2>
+<ul>
+<li>
+<p>树莓派 3B+</p>
+<p>📣现在最新已经是4B了，性能更强了，千兆网口也更适合家庭共享文件。手头正好有3B+就用了。</p>
+<ul>
+<li>散热片2片</li>
+<li>保护壳一个</li>
+</ul>
+</li>
+<li>
+<p>电源：</p>
+<ul>
+<li>Micro USB 接口数据线（输出电压：5V 输出电流：≥2A）</li>
+<li>实际使用了IPAD 充电器，感觉其他手机充电器应该也行</li>
+</ul>
+</li>
+<li>
+<p>Micro SD卡</p>
+<ul>
+<li>树莓派不带硬盘，Micro SD卡就是硬盘。最小容量8G，推荐使用16G和32G的卡。</li>
+</ul>
+</li>
+<li>
+<p>SD 读卡器</p>
+</li>
+<li>
+<p>网线一根</p>
+</li>
+<li>
+<p>显示器：（可以不用）</p>
+<ul>
+<li>Raspberry pi 带有HDMI接口，可以连接显示器SD 卡读卡器</li>
+<li>实际使用了SSH 在电脑上连接VNC远程桌面，实际上也不太用到</li>
+</ul>
+</li>
+<li>
+<p>电脑</p>
+<ul>
+<li>进行SSH连接等各种操作</li>
+</ul>
+</li>
+<li>
+<p>硬盘或其他大容器存储设备以及配套电源等</p>
+<p>📣实际使用了2T的机械硬盘和易驱线+电源，因为树莓派带不动3.5寸的硬盘，硬盘一定要额外的电源。硬盘盒子可能比易驱线更稳。所以移动硬盘可能更省事，直接USB一插就好了，还剩空间。</p>
+</li>
+</ul>
+<h2 id="所需软件">所需软件</h2>
+<ul>
+<li>
+<p>系统下载（选一个）</p>
+<blockquote>
+<p>想要有桌面的，系统也要下desktop版，如果使用OMV5的话，官方手册建议系统是lite版，不过OMV5不在本文讨论之列。</p>
+</blockquote>
+<ul>
+<li><a href="https://www.raspberrypi.org/software/">官网</a></li>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/raspberry-pi-os-images/">清华镜像</a></li>
+<li><a href="https://mirrors.sjtug.sjtu.edu.cn/raspberry-pi-os-images/">上交镜像</a></li>
+</ul>
+</li>
+<li>
+<p>检验MD5：检验下载系统镜像是否正确</p>
+<ul>
+<li><a href="https://md5-sha-checksum-utility.en.lo4d.com/windows">MD5–SHA Checksum utility</a></li>
+</ul>
+<p>📣保险起见还是Check一下</p>
+</li>
+<li>
+<p>解压软件</p>
+<ul>
+<li>7-Zip</li>
+</ul>
+</li>
+<li>
+<p>格式化SD卡</p>
+<ul>
+<li><a href="https://www.sdcard.org/downloads/formatter/eula_windows/index.html">SDFormatter</a></li>
+<li><a href="http://www.heise.de/ct/Redaktion/bo/downloads/h2testw_1.4.zip">h2testw</a>（不用也可）</li>
+</ul>
+</li>
+<li>
+<p>烧录系统（选一个）</p>
+<ul>
+<li><a href="https://www.balena.io/etcher/">Etcher</a></li>
+<li>win32diskimager</li>
+</ul>
+</li>
+<li>
+<p>SSH 客户端</p>
+<ul>
+<li><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">PuTTY</a></li>
+<li>或其他</li>
+</ul>
+<p>📣实际直接使用了系统自带的cmd</p>
+</li>
+</ul>
+<h2 id="准备步骤">准备步骤</h2>
+<h3 id="获取树莓派系统镜像">获取树莓派系统镜像</h3>
+<ol>
+<li>在<a href="https://www.raspberrypi.org/software/">官网</a>/<a href="https://mirrors.tuna.tsinghua.edu.cn/raspberry-pi-os-images/">镜像站</a>下载树莓派系统</li>
+<li>校验<a href="https://md5-sha-checksum-utility.en.lo4d.com/windows">MD5</a>和SHA hash值，确保文件正确（重要）</li>
+<li>使用解压工具如<code>7-Zip</code>解压出以<code>.img</code>结尾的镜像</li>
+</ol>
+<p>📣因为是小白，所以实际上每一步都做了。</p>
+<h3 id="格式化和测试sd卡">格式化和测试SD卡</h3>
+<ol>
+<li>将SD卡插入读卡器，读卡器接入电脑的USB接口</li>
+<li>使用<a href="https://www.sdcard.org/downloads/formatter/eula_windows/index.html">SD格式化工具</a>清理SD卡</li>
+<li>等待</li>
+<li>使用<a href="http://www.heise.de/ct/Redaktion/bo/downloads/h2testw_1.4.zip">测试工具</a>,确保没有错误（可选）</li>
+<li>等待</li>
+<li>再次格式化SD卡</li>
+<li>等待</li>
+</ol>
+<p>📣因为是小白，所以实际上每一步都做了。</p>
+<h3 id="烧录系统到sd卡">烧录系统到SD卡</h3>
+<ol>
+<li>使用<a href="https://www.balena.io/etcher/">烧录工具</a>将系统烧录到SD卡内</li>
+<li>等待</li>
+</ol>
+<h3 id="开启ssh远程连接服务">开启SSH远程连接服务</h3>
+<ol>
+<li>烧录完，在电脑上进入SD卡内</li>
+<li>新建一个名为<code>ssh</code>且无任何后缀名的空文件，如果没有网线的话，从初次启动的第六步的第二步开始。如果<strong>没有路由器，没有网线，没有显示器</strong>，从初次启动的第六步开始。</li>
+<li>弹出SD卡</li>
+</ol>
+<h3 id="初次启动">初次启动</h3>
+<ol>
+<li>
+<p>将SD卡插入树莓派</p>
+</li>
+<li>
+<p>连接电源</p>
+</li>
+<li>
+<p>连接网线到路由器</p>
+</li>
+<li>
+<p>登入路由器，进入路由器设置面板，查看树莓派的IP地址，</p>
+<ul>
+<li>如果以后只使用有线连接，可以将有线连接的IP地址和MAC地址进行绑定</li>
+</ul>
+</li>
+<li>
+<p>使用SSH客户端登录</p>
+<ul>
+<li>cmd：<code>ssh pi@ip地址</code>；password：<code>raspberry</code></li>
+<li>登录出现<code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</code>,进入提示的文件路径，一般是删除<code>.ssh</code>文件夹下的known_hosts文件中的某一行（提示路径后面的数字），重新<code>ssh</code>就可以了。</li>
+</ul>
+</li>
+<li>
+<p>如果<strong>没有路由器，没有网线，没有显示器</strong>，只有一台联网的电脑，就可以进行wifi预设置，<strong>有失败的可能性</strong>。</p>
+<ol>
+<li>
+<p>打开电脑的移动热点</p>
+</li>
+<li>
+<p>在创建完<code>ssh</code>文件后，再创建一个新文本文档，内容为</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 country=US
       
@@ -21,38 +264,179 @@ network={
   psk=&#34;Your WPA/WPA2 security key&#34;
   key_mgmt=WPA-PSK
 }
-</code></pre></td></tr></table></div></div><p>要修改<code>ssid</code>和<code>psk</code>引号里的内容, 这在电脑设置&#187;移动热点中查看<code>ssid</code>的引号内填<code>网络名称</code>冒号后面的内容，<code>psk</code>填<code>网络密码</code>冒号后面的内容</p></li><li><p>重命名该文件名为<code>wpa_supplicant.conf</code>,同样不要以<code>.txt</code>的文件后缀名，可添加多个wifi，只要再增加一个network即可</p></li><li><p>完成以上操作后，将卡插入树莓派中，树莓派通上电源</p></li><li><p>看笔记本设置&#187;移动热点页面的<code>已连接的设备</code>那里会显示已连接设备一台，并出现树莓派的IP地址，192开头的即是，或者使用IP搜索工具，如<code>Advanced IP Scanner</code></p></li><li><p>SSH登录</p></li></ol></li></ol><p>📣实际上，用网线接的路由器和树莓派，并绑定了有线IP地址。以前在学校的时候没办法用过第六步，寻找IP的失败概率迷之高。当然最简单的是连屏幕，但没屏幕没试过。</p><h3 id=基本设置>基本设置</h3><ol><li>进入设置界面：<code>sudo raspi-config</code></li><li>开启VNC Server：<strong>Interfacing Option &#187; VNC</strong></li><li>位置：Localisation Options&#187;Locale&#187;zh_CN,UTF-8,UTF-8</li><li>时区：Localisation Options&#187;Timezone&#187;Asia&#187;Shanghai</li><li>finish 重启</li><li>更改镜像源：<a href=https://mirror.tuna.tsinghua.edu.cn/help/raspbian/ target=_blank rel="noopener noreffer">清华</a><ol><li><code>sudo nano /etc/apt/sources.list</code> 删除/<code>#</code>注释掉原文，复制黏贴，保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li><li><code>sudo nano /etc/apt/sources.list.d/raspi.list</code> 删除/<code>#</code>注释掉原文，复制黏贴，保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li><li><code>sudo apt-get update</code></li></ol></li></ol><p>📣以上都是必要设置，实际上也只设置了这些。</p><h2 id=文件共享服务搭建>文件共享服务搭建</h2><h3 id=安装ntfs-3g>安装ntfs-3g</h3><blockquote><p>要挂载<code>ntfs</code>格式的硬盘，必须有<code>ntfs-3g</code>模块的支持，没有的话，只能读不能写。</p></blockquote><ol><li>看系统有没有自带<code>apt search ntfs-3g</code>,有就直接下一步</li><li>或者直接安装<ul><li><code>sudo apt-get install -y ntfs-3g</code></li><li>加载内核支持<code>modprobe fuse</code></li></ul></li><li>或者直接将硬盘格式化为ext4格式：<code>mkfs.ext4 /dev/sda1</code></li></ol><p>📣实际上没有安装。</p><h3 id=硬盘挂载>硬盘挂载</h3><ul><li>查看硬盘挂载情况：<code>df -h</code> 一般会自动挂载到<code>/media/pi</code>，</li><li>将硬盘挂载到指定目录，跳到步骤5</li></ul><blockquote><p>如果是新硬盘或着有想删掉的分区</p></blockquote><ol><li><p>查看外接硬盘分区表：<code>sudo fdisk -l</code>,一般是<code>/dev/sda</code>，</p><ul><li><p>如果看不到硬盘，可能电压不足，硬盘要外接电源</p></li><li><p>如果出现<code>Partition 1 does not start on physical sector boundary</code>情况，可能问题不大，不影响使用，将起始位置设置<em>为8的倍数的</em>任何逻辑扇区。</p><ol><li>备份</li><li>结果1：<code>cat /sys/block/sdb/queue/optimal_io_size</code></li><li>结果2：<code>cat /sys/block/sdb/alignment_offset</code></li><li>通过公式计算：（结果1+结果2）/512=结果3</li><li>重新分区,删除所有分区<ul><li><code>parted /dev/sda</code></li><li><code>rm 1...</code></li></ul></li><li><code>mkpart primary ext4 结果3s 10240G</code></li><li><code>sudo fdisk -l</code>->跳到2.4</li></ol><p>📣实际上直接从2.2开始到结束，使用了fdisk删掉所有分区，默认新建分区&mldr;好像也不报这个警告了。</p></li></ul></li><li><p>对外接硬盘进行分区：<code>sudo fdisk /dev/sda</code></p></li><li><p>出现<code>Command(m for help)</code>,使用指令进行相关操作（在输入 <code>w </code>命令执行写入之前，所有改动都是在内存中的，<code>Ctrl+C</code>随时退出重来。）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>fdisk 常用指令
+</code></pre></td></tr></table></div>
+</div>
+</div><p>要修改<code>ssid</code>和<code>psk</code>引号里的内容, 这在电脑设置&raquo;移动热点中查看<code>ssid</code>的引号内填<code>网络名称</code>冒号后面的内容，<code>psk</code>填<code>网络密码</code>冒号后面的内容</p>
+</li>
+<li>
+<p>重命名该文件名为<code>wpa_supplicant.conf</code>,同样不要以<code>.txt</code>的文件后缀名，可添加多个wifi，只要再增加一个network即可</p>
+</li>
+<li>
+<p>完成以上操作后，将卡插入树莓派中，树莓派通上电源</p>
+</li>
+<li>
+<p>看笔记本设置&raquo;移动热点页面的<code>已连接的设备</code>那里会显示已连接设备一台，并出现树莓派的IP地址，192开头的即是，或者使用IP搜索工具，如<code>Advanced IP Scanner</code></p>
+</li>
+<li>
+<p>SSH登录</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>📣实际上，用网线接的路由器和树莓派，并绑定了有线IP地址。以前在学校的时候没办法用过第六步，寻找IP的失败概率迷之高。当然最简单的是连屏幕，但没屏幕没试过。</p>
+<h3 id="基本设置">基本设置</h3>
+<ol>
+<li>进入设置界面：<code>sudo raspi-config</code></li>
+<li>开启VNC Server：<strong>Interfacing Option &raquo; VNC</strong></li>
+<li>位置：Localisation Options&raquo;Locale&raquo;zh_CN,UTF-8,UTF-8</li>
+<li>时区：Localisation Options&raquo;Timezone&raquo;Asia&raquo;Shanghai</li>
+<li>finish 重启</li>
+<li>更改镜像源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/raspbian/">清华</a>
+<ol>
+<li><code>sudo nano /etc/apt/sources.list</code> 删除/<code>#</code>注释掉原文，复制黏贴，保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li>
+<li><code>sudo nano /etc/apt/sources.list.d/raspi.list</code> 删除/<code>#</code>注释掉原文，复制黏贴，保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li>
+<li><code>sudo apt-get update</code></li>
+</ol>
+</li>
+</ol>
+<p>📣以上都是必要设置，实际上也只设置了这些。</p>
+<h2 id="文件共享服务搭建">文件共享服务搭建</h2>
+<h3 id="安装ntfs-3g">安装ntfs-3g</h3>
+<blockquote>
+<p>要挂载<code>ntfs</code>格式的硬盘，必须有<code>ntfs-3g</code>模块的支持，没有的话，只能读不能写。</p>
+</blockquote>
+<ol>
+<li>看系统有没有自带<code>apt search ntfs-3g</code>,有就直接下一步</li>
+<li>或者直接安装
+<ul>
+<li><code>sudo apt-get install -y ntfs-3g</code></li>
+<li>加载内核支持<code>modprobe fuse</code></li>
+</ul>
+</li>
+<li>或者直接将硬盘格式化为ext4格式：<code>mkfs.ext4 /dev/sda1</code></li>
+</ol>
+<p>📣实际上没有安装。</p>
+<h3 id="硬盘挂载">硬盘挂载</h3>
+<ul>
+<li>查看硬盘挂载情况：<code>df -h</code> 一般会自动挂载到<code>/media/pi</code>，</li>
+<li>将硬盘挂载到指定目录，跳到步骤5</li>
+</ul>
+<blockquote>
+<p>如果是新硬盘或着有想删掉的分区</p>
+</blockquote>
+<ol>
+<li>
+<p>查看外接硬盘分区表：<code>sudo fdisk -l</code>,一般是<code>/dev/sda</code>，</p>
+<ul>
+<li>
+<p>如果看不到硬盘，可能电压不足，硬盘要外接电源</p>
+</li>
+<li>
+<p>如果出现<code>Partition 1 does not start on physical sector boundary</code>情况，可能问题不大，不影响使用，将起始位置设置<em>为8的倍数的</em>任何逻辑扇区。</p>
+<ol>
+<li>备份</li>
+<li>结果1：<code>cat /sys/block/sdb/queue/optimal_io_size</code></li>
+<li>结果2：<code>cat /sys/block/sdb/alignment_offset</code></li>
+<li>通过公式计算：（结果1+结果2）/512=结果3</li>
+<li>重新分区,删除所有分区
+<ul>
+<li><code>parted /dev/sda</code></li>
+<li><code>rm 1...</code></li>
+</ul>
+</li>
+<li><code>mkpart primary ext4 结果3s 10240G</code></li>
+<li><code>sudo fdisk -l</code>-&gt;跳到2.4</li>
+</ol>
+<p>📣实际上直接从2.2开始到结束，使用了fdisk删掉所有分区，默认新建分区&hellip;好像也不报这个警告了。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>对外接硬盘进行分区：<code>sudo fdisk /dev/sda</code></p>
+</li>
+<li>
+<p>出现<code>Command(m for help)</code>,使用指令进行相关操作（在输入 <code>w </code>命令执行写入之前，所有改动都是在内存中的，<code>Ctrl+C</code>随时退出重来。）</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">fdisk 常用指令
 n: 添加新的分区
 p: 查看分区信息
 w: 保存退出
 q: 不保存退出
 d: 删除分区
 t: 改变分区类型
-</code></pre></td></tr></table></div></div></li><li><p>格式化分区：<code>sudo mkfs -t ext4 /dev/sda1</code></p></li><li><p>挂载到指定目录：</p><ol><li>创建想要挂载的目录：<code>mkdir /home/pi/share</code>，目录随意，似乎一般放<code>/mnt/</code>下</li><li>使用mount将分区挂载到目录上：<code>sudo mount /dev/sda1 /home/pi/share</code></li><li>赋予pi用户操作该目录的权限：<code>sudo chown pi:pi /home/pi/share</code></li><li>挂载出错或者挂载错地方了或者卸载：<code>sudo umount /dev/sda1</code></li><li>查看挂载情况：<code>df -h</code>,或者直接<code>cd ~/share</code>查看</li></ol></li><li><p>开机自动挂载，fstab方式</p><ol><li>查看硬盘的UUID：<code>sudo blkid</code> 或者 <code>ls -l /dev/disk/by-uuid</code>,记下UUID</li><li>将硬盘信息添加到<code>/etc/fstab</code> 末尾<ol><li><code>sudo nano /etc/fstab</code></li><li>ext4格式：<code>UUID=e3e1729e-5f30-41d3-ae87-7e1a6721baab /home/pi/share ext4 defaults 0 2</code></li><li>ntfs格式：<code>UUID=你的UUID 你的挂载目录 ntfs gid=pi,uid=pi,dmask=002,fmask=113 0 0</code></li><li>保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li></ol></li></ol></li><li><p>重启：<code>sudo reboot</code></p></li></ol><h3 id=安装samba>安装Samba</h3><ol><li><p>安装：<code>sudo apt-get install samba samba-common-bin</code></p></li><li><p>修改配置文件：<code>sudo nano /etc/samba/smb.conf</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-cmd data-lang=cmd>[Share 随便起个名]
+</code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>格式化分区：<code>sudo mkfs -t ext4 /dev/sda1</code></p>
+</li>
+<li>
+<p>挂载到指定目录：</p>
+<ol>
+<li>创建想要挂载的目录：<code>mkdir  /home/pi/share</code>，目录随意，似乎一般放<code>/mnt/</code>下</li>
+<li>使用mount将分区挂载到目录上：<code>sudo mount /dev/sda1 /home/pi/share</code></li>
+<li>赋予pi用户操作该目录的权限：<code>sudo chown pi:pi /home/pi/share</code></li>
+<li>挂载出错或者挂载错地方了或者卸载：<code>sudo umount /dev/sda1</code></li>
+<li>查看挂载情况：<code>df -h</code>,或者直接<code>cd ~/share</code>查看</li>
+</ol>
+</li>
+<li>
+<p>开机自动挂载，fstab方式</p>
+<ol>
+<li>查看硬盘的UUID：<code>sudo blkid</code> 或者 <code>ls -l /dev/disk/by-uuid</code>,记下UUID</li>
+<li>将硬盘信息添加到<code>/etc/fstab</code> 末尾
+<ol>
+<li><code>sudo nano /etc/fstab</code></li>
+<li>ext4格式：<code>UUID=e3e1729e-5f30-41d3-ae87-7e1a6721baab     /home/pi/share   ext4  defaults   0   2</code></li>
+<li>ntfs格式：<code>UUID=你的UUID   你的挂载目录   ntfs    gid=pi,uid=pi,dmask=002,fmask=113   0   0</code></li>
+<li>保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>重启：<code>sudo reboot</code></p>
+</li>
+</ol>
+<h3 id="安装samba">安装Samba</h3>
+<ol>
+<li>
+<p>安装：<code>sudo apt-get install samba samba-common-bin</code></p>
+</li>
+<li>
+<p>修改配置文件：<code>sudo nano /etc/samba/smb.conf</code></p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd">[Share 随便起个名]
    
-    <span class=k>path</span> = 共享的地址，硬盘挂载地址，例如/home/pi/share
+    <span class="k">path</span> = 共享的地址，硬盘挂载地址，例如/home/pi/share
    
     valid users = pi   可以访问的用户，如果开启了root用户权限，就加上root
    
@@ -65,58 +449,107 @@ t: 改变分区类型
     create mask = 0644 新建文件权限
    
     directory mask = 0775 新建文件夹的权限
-</code></pre></td></tr></table></div></div></li><li><p>保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</p></li><li><p>测试语法<code>testparm</code></p></li><li><p>添加用户和密码：<code>sudo smbpasswd -a pi</code></p></li><li><p>启动Samba服务：<code>systemctl start samba</code></p></li><li><p>查看Samba服务状态：<code>systemctl status smbd</code></p></li><li><p>打开此电脑，下拉到网络，开启网络发现，未打开时 Windows 会在窗口顶部提示你。地址栏搜索<code>\\树莓派ip</code>，出现Share 文件夹（如果起的名字是Share）</p></li><li><p>开机启动：<code>sudo systemctl enable smbd</code></p></li><li><p>映射网络驱动器：右击Share文件夹选择映射网络驱动器</p></li></ol><h2 id=aria2>Aria2</h2><h3 id=安装及配置>安装及配置</h3><ol><li><p>安装<code>aria2</code>：<code>sudo apt install aria2</code></p></li><li><p><code>mkdir -p ~/.config/aria2/</code></p></li><li><p>创建会话空白文件<code>touch ~/.config/aria2/aria2.session</code></p></li><li><p><a href=https://github.com/P3TERX/aria2.sh target=_blank rel="noopener noreffer">一键脚本</a></p></li><li><p>手动添加一个aria配置文件：<code>nano ~/.config/aria2/aria2.config</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># set your own path
+</code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>保存<code>Ctrl+O</code>+回车+<code>Ctrl+X</code>退出</p>
+</li>
+<li>
+<p>测试语法<code>testparm</code></p>
+</li>
+<li>
+<p>添加用户和密码：<code>sudo smbpasswd -a pi</code></p>
+</li>
+<li>
+<p>启动Samba服务：<code>systemctl start samba</code></p>
+</li>
+<li>
+<p>查看Samba服务状态：<code>systemctl status smbd</code></p>
+</li>
+<li>
+<p>打开此电脑，下拉到网络，开启网络发现，未打开时 Windows 会在窗口顶部提示你。地址栏搜索<code>\\树莓派ip</code>，出现Share 文件夹（如果起的名字是Share）</p>
+</li>
+<li>
+<p>开机启动：<code>sudo systemctl enable smbd</code></p>
+</li>
+<li>
+<p>映射网络驱动器：右击Share文件夹选择映射网络驱动器</p>
+</li>
+</ol>
+<h2 id="aria2">Aria2</h2>
+<h3 id="安装及配置">安装及配置</h3>
+<ol>
+<li>
+<p>安装<code>aria2</code>：<code>sudo apt install aria2</code></p>
+</li>
+<li>
+<p><code>mkdir -p ~/.config/aria2/</code></p>
+</li>
+<li>
+<p>创建会话空白文件<code>touch ~/.config/aria2/aria2.session</code></p>
+</li>
+<li>
+<p><a href="https://github.com/P3TERX/aria2.sh">一键脚本</a></p>
+</li>
+<li>
+<p>手动添加一个aria配置文件：<code>nano ~/.config/aria2/aria2.config</code></p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># set your own path
 dir=[yourpath]
 disk-cache=32M
 file-allocation=trunc
@@ -167,19 +600,36 @@ bt-seed-unverified=true
 bt-save-metadata=true
 bt-tracker=udp://62.138.0.158:6969/announce,udp://87.233.192.220:6969/announce,udp://111.6.78.96:6969/announce,udp://90.179.64.91:1337/announce,udp://51.15.4.13:1337/announce,udp://151.80.120.113:2710/announce,udp://191.96.249.23:6969/announce,udp://35.187.36.248:1337/announce,udp://123.249.16.65:2710/announce,udp://210.244.71.25:6969/announce,udp://78.142.19.42:1337/announce,udp://173.254.219.72:6969/announce,udp://51.15.76.199:6969/announce,udp://51.15.40.114:80/announce,udp://91.212.150.191:3418/announce,udp://103.224.212.222:6969/announce,udp://5.79.83.194:6969/announce,udp://92.241.171.245:6969/announce,udp://5.79.209.57:6969/announce,udp://82.118.242.198:1337/announce
    
-</code></pre></td></tr></table></div></div></li><li><p>启动测试</p><p><code>aria2c --conf-path=/home/pi/.config/aria2/aria2.config</code></p><p><code>ps aux | grep aria2</code></p></li><li><p>开机启动</p><ol><li><p>创建<code>systemctl service</code>文件：<code>sudo nano /lib/systemd/system/aria2.service</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>[Unit]
+</code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>启动测试</p>
+<p><code>aria2c --conf-path=/home/pi/.config/aria2/aria2.config</code></p>
+<p><code>ps aux | grep aria2</code></p>
+</li>
+<li>
+<p>开机启动</p>
+<ol>
+<li>
+<p>创建<code>systemctl service</code>文件：<code>sudo nano /lib/systemd/system/aria2.service</code></p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
 Description=Aria2 Service
 After=network.target
       
@@ -191,10 +641,145 @@ ExecStart=/usr/bin/aria2c --conf-path=/home/pi/.config/aria2/aria2.config
 [Install]
 WantedBy=multi-user.target
       
-</code></pre></td></tr></table></div></div></li><li><p>重新载入服务，并设置开机启动
+</code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>重新载入服务，并设置开机启动
 <code>sudo systemctl daemon-reload</code>
-<code>sudo systemctl enable aria2</code></p></li><li><p>查看aria服务状态
-<code>sudo systemctl status aria2</code></p></li></ol></li><li><p>启动，停止，重启aria服务
-<code>sudo systemctl（start、stop、restart） aria2</code></p></li></ol><h3 id=前端>前端</h3><ol><li><p>安装<code>nginx</code>：<code>sudo apt install nginx</code></p></li><li><p><code>cd /var/www/html</code></p></li><li><p>安装<code>AriaNg</code> 的前端</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>sudo wget https://github.com/mayswind/AriaNg/releases/download/1.1.7/AriaNg-1.1.7-AllInOne.zip
-</code></pre></td></tr></table></div></div></li><li><p>解压：<code>unzip AriaNg-1.1.7-AllInOne.zip</code></p></li><li><p>查看前端页面 <code>ls</code></p></li><li><p>启动<code>nginx</code>：<code>systemctl start nginx</code></p></li><li><p>查看<code>nginx</code>状态：<code>systemctl status nginx</code></p></li><li><p>测试页面，在浏览器内输入树莓派IP地址，显示AriaNg页面</p></li><li><p>设置开机启动：<code>systemctl enable nginx</code></p></li><li><p>进入<code>http://树莓派地址/#!/settings/ariang</code>，设置<code>Aria2 RPC密钥</code>，<code>secret</code></p></li><li><p><a href=https://github.com/ngosang/trackerslist target=_blank rel="noopener noreffer">trackerlist</a></p></li></ol><h2 id=参考>参考</h2><ol><li><a href=https://www.bilibili.com/video/BV1aZ4y1g7ay>https://www.bilibili.com/video/BV1aZ4y1g7ay</a></li><li><a href=https://enit.xyz/tech/raspberry-pi-101/>https://enit.xyz/tech/raspberry-pi-101/</a></li><li><a href=https://blog.csdn.net/kxwinxp/article/details/80288006>https://blog.csdn.net/kxwinxp/article/details/80288006</a></li><li><a href=https://li-aaron.github.io/2019/01/aira2-on-raspberry/>https://li-aaron.github.io/2019/01/aira2-on-raspberry/</a></li><li><a href=https://blog.csdn.net/kxwinxp/article/details/80288006>https://blog.csdn.net/kxwinxp/article/details/80288006</a></li><li><a href=https://blog.csdn.net/sunye8910/article/details/81177298>https://blog.csdn.net/sunye8910/article/details/81177298</a></li><li><a href=https://blog.csdn.net/jorondo/article/details/104504408>https://blog.csdn.net/jorondo/article/details/104504408</a></li><li><a href=https://www.cnblogs.com/magicbowie/p/10896703.html>https://www.cnblogs.com/magicbowie/p/10896703.html</a></li><li><a href=https://blog.csdn.net/u011785648/article/details/106390074/>https://blog.csdn.net/u011785648/article/details/106390074/</a></li><li><a href=https://www.upantool.com/jiaocheng/disk/13511.html>https://www.upantool.com/jiaocheng/disk/13511.html</a></li></ol></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2021-01-05</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/first_post/index.md target=_blank>阅读原始文档</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/>树莓派</a></section><section><span><a href=javascript:void(0); onclick=window.history.back();>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/helloworld/ class=prev rel=prev title="hello world"><i class="fas fa-angle-left fa-fw"></i>hello world</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.79.1" one-link-mark=yes>Hugo</a> | Theme is <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10" one-link-mark=yes>LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>nicokon</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i></a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.css><link rel=stylesheet href=/lib/katex/copy-tex.min.css><link rel=stylesheet href=/lib/cookieconsent/cookieconsent.min.css><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.js></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/lib/lunr/lunr.min.js></script><script type=text/javascript src=/lib/lunr/lunr.stemmer.support.min.js></script><script type=text/javascript src=/lib/lunr/lunr.zh.min.js></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/lib/katex/katex.min.js></script><script type=text/javascript src=/lib/katex/auto-render.min.js></script><script type=text/javascript src=/lib/katex/copy-tex.min.js></script><script type=text/javascript src=/lib/cookieconsent/cookieconsent.min.js></script><script type=text/javascript>window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
+<code>sudo systemctl enable aria2</code></p>
+</li>
+<li>
+<p>查看aria服务状态
+<code>sudo systemctl status aria2</code></p>
+</li>
+</ol>
+</li>
+<li>
+<p>启动，停止，重启aria服务
+<code>sudo systemctl（start、stop、restart） aria2</code></p>
+</li>
+</ol>
+<h3 id="前端">前端</h3>
+<ol>
+<li>
+<p>安装<code>nginx</code>：<code>sudo apt install nginx</code></p>
+</li>
+<li>
+<p><code>cd /var/www/html</code></p>
+</li>
+<li>
+<p>安装<code>AriaNg</code> 的前端</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget https://github.com/mayswind/AriaNg/releases/download/1.1.7/AriaNg-1.1.7-AllInOne.zip
+</code></pre></td></tr></table></div>
+</div>
+</div></li>
+<li>
+<p>解压：<code>unzip AriaNg-1.1.7-AllInOne.zip</code></p>
+</li>
+<li>
+<p>查看前端页面 <code>ls</code></p>
+</li>
+<li>
+<p>启动<code>nginx</code>：<code>systemctl start nginx</code></p>
+</li>
+<li>
+<p>查看<code>nginx</code>状态：<code>systemctl status nginx</code></p>
+</li>
+<li>
+<p>测试页面，在浏览器内输入树莓派IP地址，显示AriaNg页面</p>
+</li>
+<li>
+<p>设置开机启动：<code>systemctl enable nginx</code></p>
+</li>
+<li>
+<p>进入<code>http://树莓派地址/#!/settings/ariang</code>，设置<code>Aria2 RPC密钥</code>，<code>secret</code></p>
+</li>
+<li>
+<p><a href="https://github.com/ngosang/trackerslist">trackerlist</a></p>
+</li>
+</ol>
+<h2 id="参考">参考</h2>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1aZ4y1g7ay">https://www.bilibili.com/video/BV1aZ4y1g7ay</a></li>
+<li><a href="https://enit.xyz/tech/raspberry-pi-101/">https://enit.xyz/tech/raspberry-pi-101/</a></li>
+<li><a href="https://blog.csdn.net/kxwinxp/article/details/80288006">https://blog.csdn.net/kxwinxp/article/details/80288006</a></li>
+<li><a href="https://li-aaron.github.io/2019/01/aira2-on-raspberry/">https://li-aaron.github.io/2019/01/aira2-on-raspberry/</a></li>
+<li><a href="https://blog.csdn.net/kxwinxp/article/details/80288006">https://blog.csdn.net/kxwinxp/article/details/80288006</a></li>
+<li><a href="https://blog.csdn.net/sunye8910/article/details/81177298">https://blog.csdn.net/sunye8910/article/details/81177298</a></li>
+<li><a href="https://blog.csdn.net/jorondo/article/details/104504408">https://blog.csdn.net/jorondo/article/details/104504408</a></li>
+<li><a href="https://www.cnblogs.com/magicbowie/p/10896703.html">https://www.cnblogs.com/magicbowie/p/10896703.html</a></li>
+<li><a href="https://blog.csdn.net/u011785648/article/details/106390074/">https://blog.csdn.net/u011785648/article/details/106390074/</a></li>
+<li><a href="https://www.upantool.com/jiaocheng/disk/13511.html">https://www.upantool.com/jiaocheng/disk/13511.html</a></li>
+</ol>
+
+            </div>
+
+            
+
+
+        </article>
+
+        
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+    </div>
+</main>
+
+
+            
+
+            
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+</html>
