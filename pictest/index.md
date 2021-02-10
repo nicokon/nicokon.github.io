@@ -2,7 +2,7 @@
 
 
 <!--more-->
-![markdown图片](function示例.png)
+![示例](/posts/pictest/function示例.png)
 
-{{< figure src="/assets/images/MIT6001x-Summary/a.png" title="函数示例 (figure)" >}}
+{{< figure src="/images/MIT6001x-Summary/a.png" title="示例 (figure)" >}}
 
